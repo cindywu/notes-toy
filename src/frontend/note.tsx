@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { useNoteIDs, useNoteByID } from '../datamodel/subscriptions'
 import { randomNote } from '../datamodel/note'
 
@@ -72,17 +72,20 @@ function NoteTitle({noteID, reflect}: {noteID: string, reflect:any}){
   )
 }
 
-function EditTheThing({content,reflect,noteID}: any){
+function EditTheThing({ content, reflect, noteID }: any){
+  const [stuff, setStuff] = useState<string>(content)
+
+  useEffect(() => {
+    reflect.mutate.updateNoteContent({id: noteID, content: stuff})
+  }, [stuff])
 
   return (
     <>
-    <input
-          value={content}
-          onChange={(e) => reflect.updateNoteContent({id: noteID, content: e.target.value})}
-        />
-
-</>
-
+      <input
+        value={stuff}
+        className={"text-black"}
+        onChange={(e) => setStuff(e.target.value)}
+      />
+    </>
   )
-
 }
