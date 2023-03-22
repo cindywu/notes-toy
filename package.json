@@ -1,0 +1,35 @@
+{
+  "scripts": {
+    "dev": "next dev",
+    "dev-worker": "wrangler dev",
+    "build": "rm -rf dist && next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@cloudflare/workers-types": "^4.20230321.0",
+    "@datadog/browser-logs": "^4.35.0",
+    "@rocicorp/datadog-util": "^0.6.0",
+    "@rocicorp/logger": "^4.1.0",
+    "@rocicorp/reflect": "^0.13.1",
+    "@rocicorp/reflect-server": "^0.22.0",
+    "bootstrap": "^5.2.3",
+    "dotenv": "^16.0.3",
+    "nanoid": "^4.0.1",
+    "next": "^13.2.4",
+    "react": "^18.2.0",
+    "react-bootstrap": "^2.7.2",
+    "react-dom": "^18.2.0",
+    "react-draggable": "^4.4.5",
+    "react-hotkeys": "^2.0.0",
+    "zod": "^3.21.4"
+  },
+  "devDependencies": {
+    "@types/react": "18.0.28",
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.21",
+    "tailwindcss": "^3.2.7",
+    "typescript": "5.0.2",
+    "wrangler": "^2.13.0"
+  }
+}

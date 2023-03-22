@@ -1,0 +1,85 @@
+import { useEffect, useState } from "react";
+import { Reflect } from "@rocicorp/reflect";
+// import { Designer } from "../../frontend/designer";
+// import { Nav } from "../../frontend/nav";
+import { M, clientMutators } from "../datamodel/mutators";
+import { randUserInfo } from "../datamodel/client-state";
+import { nodeConsoleLogSink, OptionalLoggerImpl } from "@rocicorp/logger";
+import { DataDogBrowserLogSink } from "../frontend/data-dog-browser-log-sink";
+import { workerWsURI, workerURL } from "../util/host";
+import { Metrics, Reporter } from "@rocicorp/datadog-util";
+import Note from "../frontend/note";
+
+export default function Home() {
+  const [reflect, setReflectClient] = useState<Reflect<M> | null>(null);
+  const [online, setOnline] = useState(false);
+
+  const logSink = nodeConsoleLogSink;
+  const logger = new OptionalLoggerImpl(logSink);
+  const logSinks = [logSink];
+  if (process.env.NEXT_PUBLIC_DATADOG_CLIENT_TOKEN !== undefined) {
+    logSinks.push(new DataDogBrowserLogSink());
+  }
+
+  useEffect(() => {
+    const roomID = "cindy-wu-dot-com-notes";
+
+    (async () => {
+      logger.info?.(`Connecting to worker at ${workerWsURI}`);
+      const userID = "reflect-user";
+      const metrics = new Metrics();
+      // TODO figure out why we can't use ROUTES.reportMetrics here from reflect-server.
+      const metricsEndpoint = new URL("/api/metrics/v0/report", workerURL);
+      new Reporter({
+        metrics,
+        url: metricsEndpoint.toString(),
+      });
+
+      const r = new Reflect<M>({
+        socketOrigin: workerWsURI,
+        onOnlineChange: setOnline,
+        userID,
+        roomID,
+        auth: JSON.stringify({
+          userID,
+          roomID,
+        }),
+        logSinks,
+        mutators: clientMutators,
+        metrics,
+      });
+
+      const defaultUserInfo = randUserInfo();
+      await r.mutate.initClientState({
+        id: await r.clientID,
+        defaultUserInfo,
+      });
+      await r.mutate.initShapes();
+
+      setReflectClient(r);
+    })();
+  }, []);
+
+  if (!reflect) {
+    return null;
+  }
+
+  return (
+    <div
+      style={{
+        position: "absolute",
+        display: "flex",
+        flexDirection: "column",
+        left: 0,
+        top: 0,
+        width: "100%",
+        height: "100%",
+        background: "rgb(229,229,229)",
+      }}
+    >
+      <Note reflect={reflect} />
+      {/* <Nav reflect={reflect} online={online} /> */}
+      {/* <Designer reflect={reflect} logger={logger} /> */}
+    </div>
+  );
+}
