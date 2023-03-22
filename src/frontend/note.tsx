@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef } from 'react'
 import { useNoteIDs, useNoteByID } from '../datamodel/subscriptions'
 import { randomNote } from '../datamodel/note'
 
@@ -11,12 +11,12 @@ export default function Note({reflect}:any) {
 
   const [noteDrafter, setNoteDrafter] = useState<boolean>(false)
 
-  function doSomething(){
-    console.log('do something')
-    const note = randomNote()
-    console.log('note', note)
-    reflect.mutate.createNote(note)
-  }
+  // function doSomething(){
+  //   console.log('do something')
+  //   const note = randomNote()
+  //   console.log('note', note)
+  //   reflect.mutate.createNote(note)
+  // }
 
   function sendNote(){
     const note : any = randomNote()
@@ -50,7 +50,7 @@ export default function Note({reflect}:any) {
 
 function NoteTitle({noteID, reflect}: {noteID: string, reflect:any}){
   const [editable, setEditable] = useState<boolean>(false)
-  const [contentValue, setContentValue] = useState<string>('')
+  // const [contentValue, setContentValue] = useState<string>('')
   const note : any = useNoteByID(reflect, noteID)
   console.log({note})
 

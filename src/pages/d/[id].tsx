@@ -12,7 +12,7 @@ import Note from "../../frontend/note";
 
 export default function Home() {
   const [reflect, setReflectClient] = useState<Reflect<M> | null>(null);
-  const [online, setOnline] = useState(false);
+  const [, setOnline] = useState(false);
 
   const logSink = nodeConsoleLogSink;
   const logger = new OptionalLoggerImpl(logSink);
