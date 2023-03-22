@@ -27,7 +27,7 @@ export default function Note({reflect}:any) {
   }
   return (
     <div className={"bg-slate-800 text-white "}>
-      {noteDrafter && <div><input ref={inputRef}></input><button onClick={() => sendNote()}>send note</button></div>}
+      {noteDrafter && <div><input className={"text-black"} ref={inputRef}></input><button onClick={() => sendNote()}>send note</button></div>}
       <div onClick={() => setNoteDrafter(!noteDrafter)}>make a note</div>
       {/* <div>
         hi
