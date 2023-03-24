@@ -29,6 +29,17 @@ export function useNoteByID(reflect: Reflect<M>, id: string) {
   );
 }
 
+export function useNotes(reflect: Reflect<M>) {
+  return useSubscribe(
+    reflect,
+    async(tx) => {
+      const items = await tx.scan({ prefix: notePrefix }).entries().toArray();
+      return items
+    },
+    []
+  )
+}
+
 export function useShapeIDs(reflect: Reflect<M>) {
   return useSubscribe(
     reflect,
