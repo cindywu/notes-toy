@@ -29,6 +29,22 @@ export function useNoteByID(reflect: Reflect<M>, id: string) {
   );
 }
 
+export function useFlatNotes(reflect: Reflect<M>) {
+  const notes : any = useNotes(reflect)
+  let parsedNotes: any[] = []
+  notes.map(([k, v]: [string, any]) => {
+    const changes = {
+      date:  new Date(v.date)
+    }
+    let value = {...v, ...changes}
+    Object.assign(value, { id: k.substring(notePrefix.length )})
+    parsedNotes.push(value)
+  })
+  const sortedNotes = parsedNotes.sort((a, b) => b.date - a.date)
+  return sortedNotes
+}
+
+
 export function useNotes(reflect: Reflect<M>) {
   return useSubscribe(
     reflect,
