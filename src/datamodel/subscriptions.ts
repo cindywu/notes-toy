@@ -29,6 +29,16 @@ export function useNoteByID(reflect: Reflect<M>, id: string) {
   );
 }
 
+export function useFlatNotes(reflect: Reflect<M>) {
+  const notes : any = useNotes(reflect)
+  let parsedNotes: any[] = []
+  notes.map(([k, v]: [string, any]) => {
+    Object.assign(v, { id: k.substring(notePrefix.length )})
+    parsedNotes.push(v)
+  })
+  return parsedNotes
+}
+
 export function useNotes(reflect: Reflect<M>) {
   return useSubscribe(
     reflect,
