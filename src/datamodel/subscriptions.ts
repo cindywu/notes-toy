@@ -33,11 +33,17 @@ export function useFlatNotes(reflect: Reflect<M>) {
   const notes : any = useNotes(reflect)
   let parsedNotes: any[] = []
   notes.map(([k, v]: [string, any]) => {
-    Object.assign(v, { id: k.substring(notePrefix.length )})
-    parsedNotes.push(v)
+    const changes = {
+      date:  new Date(v.date)
+    }
+    let value = {...v, ...changes}
+    Object.assign(value, { id: k.substring(notePrefix.length )})
+    parsedNotes.push(value)
   })
-  return parsedNotes
+  const sortedNotes = parsedNotes.sort((a, b) => b.date - a.date)
+  return sortedNotes
 }
+
 
 export function useNotes(reflect: Reflect<M>) {
   return useSubscribe(
