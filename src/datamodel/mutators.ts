@@ -19,10 +19,16 @@ import {
   deleteNote,
   updateNoteContent,
 } from "./note";
+import {
+  putStatus,
+  updateStatusContent,
+} from './status'
 
 export type M = typeof serverMutators;
 
 export const serverMutators = {
+  createStatus: putStatus,
+  updateStatusContent,
   createNote: putNote,
   deleteNote,
   updateNoteContent,

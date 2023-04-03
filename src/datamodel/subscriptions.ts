@@ -4,6 +4,7 @@ import { getClientState, clientStatePrefix } from "./client-state";
 import { getShape, shapePrefix } from "./shape";
 import type { M } from "./mutators";
 import { getNote, notePrefix } from "./note";
+import { statusPrefix } from './status';
 
 export function useNoteIDs(reflect: Reflect<M>) {
   return useSubscribe(
@@ -42,6 +43,17 @@ export function useFlatNotes(reflect: Reflect<M>) {
   })
   const sortedNotes = parsedNotes.sort((a, b) => b.date - a.date)
   return sortedNotes
+}
+
+export function useStatuses(reflect: Reflect<M>) {
+  return useSubscribe(
+    reflect,
+    async(tx) => {
+      const statuses = await tx.scan({ prefix: statusPrefix }).entries().toArray();
+      return statuses
+    },
+    []
+  )
 }
 
 
