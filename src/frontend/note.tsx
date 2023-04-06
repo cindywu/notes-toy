@@ -83,7 +83,7 @@ function EditTheThing({ content, reflect, noteID }: any){
     <>
       <input
         value={stuff}
-        className={"text-black"}
+        className={"text-black w-screen"}
         onChange={(e) => setStuff(e.target.value)}
       />
     </>
