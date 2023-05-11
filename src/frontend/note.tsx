@@ -11,13 +11,6 @@ export default function Note({ reflect }: any) {
 
   const [noteDrafter, setNoteDrafter] = useState<boolean>(false)
 
-  // function doSomething(){
-  //   console.log('do something')
-  //   const note = randomNote()
-  //   console.log('note', note)
-  //   reflect.mutate.createNote(note)
-  // }
-
   function sendNote() {
     const note: any = randomNote()
     note.note.content = inputRef.current?.value
