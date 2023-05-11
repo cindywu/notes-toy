@@ -7,6 +7,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@clerk/nextjs": "^4.17.3",
     "@cloudflare/workers-types": "^4.20230321.0",
     "@datadog/browser-logs": "^4.35.0",
     "@rocicorp/datadog-util": "^0.6.0",

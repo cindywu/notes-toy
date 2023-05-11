@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import { useNoteIDs, useNoteByID } from '../datamodel/subscriptions'
 import { randomNote } from '../datamodel/note'
 
-export default function Note({reflect}:any) {
+export default function Note({ reflect }: any) {
   console.log('reflect', reflect)
   const ids = useNoteIDs(reflect)
   console.log('ids', ids)
@@ -18,72 +18,71 @@ export default function Note({reflect}:any) {
   //   reflect.mutate.createNote(note)
   // }
 
-  function sendNote(){
-    const note : any = randomNote()
+  function sendNote() {
+    const note: any = randomNote()
     note.note.content = inputRef.current?.value
     console.log('send note note', note)
     reflect.mutate.createNote(note)
-
   }
+
   return (
-    <div className={"bg-slate-800 text-white overflow-auto"}>
-      {noteDrafter && <div><input className={"text-black w-screen"} ref={inputRef}></input><button onClick={() => sendNote()}>send note</button></div>}
+    <div className={'bg-slate-800 text-white overflow-auto'}>
+      {noteDrafter && (
+        <div>
+          <input className={'text-black w-screen'} ref={inputRef}></input>
+          <button onClick={() => sendNote()}>send note</button>
+        </div>
+      )}
       <div onClick={() => setNoteDrafter(!noteDrafter)}>make a note</div>
       {/* <div>
         hi
         <input/>
         <button onClick={() => doSomething()}>submit</button>
       </div> */}
-      {ids && ids.map((id:any) => {
-        return (
-        <NoteTitle
-          key={id}
-          noteID={id}
-          reflect={reflect}
-        />
-      )
-      })
-      }
+      {ids &&
+        ids.map((id: any) => {
+          return <NoteTitle key={id} noteID={id} reflect={reflect} />
+        })}
     </div>
   )
 }
 
-function NoteTitle({noteID, reflect}: {noteID: string, reflect:any}){
+function NoteTitle({ noteID, reflect }: { noteID: string; reflect: any }) {
   const [editable, setEditable] = useState<boolean>(false)
   // const [contentValue, setContentValue] = useState<string>('')
-  const note : any = useNoteByID(reflect, noteID)
-  console.log({note})
+  const note: any = useNoteByID(reflect, noteID)
+  console.log({ note })
 
   return (
     <div>
       {/* <div>{noteID.slice(0,6)}</div> */}
-      {editable ?
-      <div>
-        <EditTheThing
-          content={note && note.content}
-          reflect={reflect}
-          noteID={noteID}
-        />
-      </div>
-      :
-      <div onClick={() => setEditable(!editable)}>{note && note.content}</div>
-      }
+      {editable ? (
+        <div>
+          <EditTheThing
+            content={note && note.content}
+            reflect={reflect}
+            noteID={noteID}
+          />
+        </div>
+      ) : (
+        <div onClick={() => setEditable(!editable)}>{note && note.content}</div>
+      )}
     </div>
   )
 }
 
-function EditTheThing({ content, reflect, noteID }: any){
+function EditTheThing({ content, reflect, noteID }: any) {
   const [stuff, setStuff] = useState<string>(content)
 
   useEffect(() => {
-    reflect.mutate.updateNoteContent({id: noteID, content: stuff})
+    reflect.mutate.updateNoteContent({ id: noteID, content: stuff })
   }, [stuff])
 
   return (
     <>
       <input
         value={stuff}
-        className={"text-black w-screen"}
+        className={'text-black w-screen'}
         onChange={(e) => setStuff(e.target.value)}
       />
     </>
